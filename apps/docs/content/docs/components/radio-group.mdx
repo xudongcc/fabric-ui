@@ -1,0 +1,85 @@
+---
+title: RadioGroup
+description: A radio group component for selecting a single option from a list of choices.
+---
+
+<Preview path="radio-group" />
+
+## Installation
+
+```bash
+pnpm dlx shadcn@latest add @fabric-ui/radio-group
+```
+
+## Usage
+
+```tsx
+import { RadioGroup } from "@/components/fabric-ui/radio-group";
+```
+
+```tsx
+<RadioGroup
+  label="Options"
+  description="Select your preferred option"
+  defaultValue="option1"
+  items={[
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ]}
+/>
+```
+
+## Examples
+
+### With Descriptions
+
+Add descriptions to individual items for additional context.
+
+<Preview path="radio-group-descriptions" />
+
+### Disabled
+
+Use the `disabled` prop on the `RadioGroup` to disable all options.
+
+<Preview path="radio-group-disabled" />
+
+### Disabled Item
+
+Set `disabled` on individual items to disable specific options.
+
+<Preview path="radio-group-disabled-item" />
+
+## Features
+
+- **Single Selection**: Only one option can be selected at a time
+- **Controlled & Uncontrolled**: Works in both controlled and uncontrolled modes
+- **Accessible**: Proper fieldset semantics with label and description support
+- **Keyboard Navigation**: Full keyboard support for option selection
+
+## Best Practices
+
+- Use clear labels for each radio option
+- Use the `label` and `description` props to provide context
+- Add descriptions to individual items when additional context is needed
+- Use radio groups when users need to select exactly one option from a list
+
+## API Reference
+
+### RadioGroupProps
+
+The root component that manages the state of all radio items in the group.
+
+<AutoTypeTable
+  path="../../packages/radio-group/index.tsx"
+  type={`Pick<RadioGroupProps, 'label' | 'description' | 'items' | 'defaultValue' | 'value' | 'onValueChange' | 'disabled' | 'className'>`}
+/>
+
+### RadioGroupItemProps
+
+Properties for individual radio items in the `items` array.
+
+<AutoTypeTable
+  path="../../packages/radio-group/index.tsx"
+  type="RadioGroupItemProps"
+/>
