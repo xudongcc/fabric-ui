@@ -11,13 +11,13 @@ export const getPackage = async (packageName: string) => {
   const packagePath = join(packageDir, "package.json");
   const packageJson = JSON.parse(await readFile(packagePath, "utf-8"));
 
-  const kiboDependencies = Object.keys(packageJson.dependencies || {}).filter(
+  const repoDependencies = Object.keys(packageJson.dependencies || {}).filter(
     (dep) => dep.startsWith("@repo") && dep !== "@repo/shadcn-ui",
   );
 
   const dependencies = Object.keys(packageJson.dependencies || {}).filter(
     (dep) =>
-      !["react", "react-dom", "@repo/shadcn-ui", ...kiboDependencies].includes(
+      !["react", "react-dom", "@repo/shadcn-ui", ...repoDependencies].includes(
         dep,
       ),
   );
@@ -63,11 +63,22 @@ export const getPackage = async (packageName: string) => {
       ?.map((path) => path.split("/").pop())
       .filter((name): name is string => !!name) || [];
 
-  for (const dep of kiboDependencies) {
+  for (const dep of repoDependencies) {
     const pkg = dep.replace("@repo/", "");
 
-    registryDependencies.push(`https://www.fabric-ui.com/r/${pkg}.json`);
+    registryDependencies.push(`https://fabric-ui-kit.vercel.app/r/${pkg}.json`);
   }
+
+  // Add thread-ui dependencies
+  files
+    .map((f) => f.content)
+    .join("\n")
+    .match(/@\/components\/thread-ui\/([a-z-]+)/g)
+    ?.map((path) => path.split("/").pop())
+    .filter((name): name is string => !!name)
+    .forEach((name) => {
+      registryDependencies.push(`https://thread-ui.vercel.app/r/${name}.json`);
+    });
 
   const css: RegistryItem["css"] = {};
 
