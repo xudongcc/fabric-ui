@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@repo/dialog";
-import { Button } from "@repo/shadcn-ui/components/ui/button";
+} from "@/components/fabric-ui/dialog";
+import { Button } from "@/components/ui/button";
 
 const Example = () => (
   <Dialog>

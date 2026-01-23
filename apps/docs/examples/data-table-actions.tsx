@@ -1,7 +1,7 @@
 "use client";
 
-import { DataTable } from "@repo/data-table";
-import type { DataTableColumnProps } from "@repo/data-table";
+import type { DataTableColumnProps } from "@/components/fabric-ui/data-table";
+import { DataTable } from "@/components/fabric-ui/data-table";
 
 interface User {
   id: string;

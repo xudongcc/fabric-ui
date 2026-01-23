@@ -1,4 +1,4 @@
-import { Button } from "@repo/button";
+import { Button } from "@/components/fabric-ui/button";
 
 const Example = () => (
   <div className="flex flex-col gap-4">

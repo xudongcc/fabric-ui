@@ -1,4 +1,4 @@
-import { Page } from "@repo/page";
+import { Page } from "@/components/fabric-ui/page";
 
 const Example = () => (
   <Page

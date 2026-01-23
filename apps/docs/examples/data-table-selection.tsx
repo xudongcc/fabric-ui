@@ -1,9 +1,9 @@
 "use client";
 
-import { DataTable } from "@repo/data-table";
-import { Button } from "@repo/shadcn-ui/components/ui/button";
 import { useState } from "react";
-import type { DataTableColumnProps } from "@repo/data-table";
+import type { DataTableColumnProps } from "@/components/fabric-ui/data-table";
+import { DataTable } from "@/components/fabric-ui/data-table";
+import { Button } from "@/components/ui/button";
 
 interface User {
   id: string;

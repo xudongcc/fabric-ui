@@ -1,13 +1,16 @@
 "use client";
 
+import type {
+  BundledLanguage,
+  CodeBlockProps,
+} from "@/components/fabric-ui/code-block";
 import {
   CodeBlock,
   CodeBlockBody,
   CodeBlockContent,
   CodeBlockCopyButton,
   CodeBlockItem,
-} from "@repo/code-block";
-import type { BundledLanguage, CodeBlockProps } from "@repo/code-block";
+} from "@/components/fabric-ui/code-block";
 
 interface PreviewCodeProps {
   code: string;
