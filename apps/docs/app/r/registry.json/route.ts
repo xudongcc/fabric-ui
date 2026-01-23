@@ -22,7 +22,7 @@ export const GET = async (_: NextRequest) => {
 
   const response: Registry = {
     name: "Fabric UI",
-    homepage: "https://example.com/",
+    homepage: "https://fabric-ui-kit.vercel.app/",
     items: [],
   };
 
