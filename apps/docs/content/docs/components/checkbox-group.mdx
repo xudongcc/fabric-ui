@@ -14,25 +14,27 @@ pnpm dlx shadcn@latest add @fabric-ui/checkbox-group
 ## Usage
 
 ```tsx
-import {
-  CheckboxGroup,
-  CheckboxGroupItem,
-} from "@/components/fabric-ui/checkbox-group";
+import { CheckboxGroup } from "@/components/fabric-ui/checkbox-group";
 ```
 
 ```tsx
-<CheckboxGroup defaultValue={["option1"]}>
-  <CheckboxGroupItem name="option1" />
-  <CheckboxGroupItem name="option2" />
-  <CheckboxGroupItem name="option3" />
-</CheckboxGroup>
+<CheckboxGroup
+  label="Options"
+  description="Select your preferred options"
+  defaultValue={["option1"]}
+  items={[
+    { value: "option1", label: "Option 1" },
+    { value: "option2", label: "Option 2" },
+    { value: "option3", label: "Option 3" },
+  ]}
+/>
 ```
 
 ## Examples
 
 ### Parent Checkbox
 
-Use the `parent` prop combined with `allValues` to create a checkbox that controls all child checkboxes. The parent checkbox will show an indeterminate state when some but not all children are selected.
+Use the `parent` prop to create a checkbox that controls all child checkboxes. The parent checkbox will show an indeterminate state when some but not all children are selected.
 
 <Preview path="checkbox-group-parent" />
 
@@ -42,20 +44,26 @@ Use the `disabled` prop on the `CheckboxGroup` to disable all checkboxes in the 
 
 <Preview path="checkbox-group-disabled" />
 
+### Disabled Item
+
+Set `disabled` on individual items to disable specific checkboxes.
+
+<Preview path="checkbox-group-disabled-item" />
+
 ## Features
 
 - **Collective State Management**: Manages the state of multiple checkboxes as a group
 - **Parent Checkbox**: Support for a parent checkbox that can select/deselect all children
 - **Indeterminate State**: Automatically shows indeterminate state on parent when partially selected
 - **Controlled & Uncontrolled**: Works in both controlled and uncontrolled modes
-- **Built on Base UI**: Leverages Base UI primitives for accessibility
+- **Accessible**: Proper fieldset semantics with label and description support
 
 ## Best Practices
 
 - Use clear labels for each checkbox option
-- Group related checkboxes together with a descriptive legend
+- Use the `label` and `description` props to provide context
 - Use the parent checkbox pattern for "select all" functionality
-- Consider using `FieldSet` and `FieldLegend` for proper form structure
+- Add descriptions to individual items when additional context is needed
 
 ## API Reference
 
@@ -65,14 +73,23 @@ The root component that manages the state of all checkboxes in the group.
 
 <AutoTypeTable
   path="../../packages/checkbox-group/index.tsx"
-  type={`Pick<CheckboxGroupProps, 'defaultValue' | 'value' | 'onValueChange' | 'allValues' | 'disabled' | 'className'>`}
+  type={`Pick<CheckboxGroupProps, 'name' | 'label' | 'description' | 'items' | 'parent' | 'defaultValue' | 'value' | 'onValueChange' | 'disabled' | 'className'>`}
 />
 
 ### CheckboxGroupItemProps
 
-Individual checkbox item within the group.
+Properties for individual checkbox items in the `items` array.
 
 <AutoTypeTable
   path="../../packages/checkbox-group/index.tsx"
-  type={`Pick<CheckboxGroupItemProps, 'name' | 'parent' | 'checked' | 'defaultChecked' | 'disabled' | 'className'>`}
+  type="CheckboxGroupItemProps"
+/>
+
+### CheckboxGroupItemParentProps
+
+Properties for the parent checkbox that controls all children.
+
+<AutoTypeTable
+  path="../../packages/checkbox-group/index.tsx"
+  type="CheckboxGroupItemParentProps"
 />
