@@ -23,7 +23,7 @@ export type RadioGroupItemProps = {
 export type RadioGroupProps = ComponentProps<typeof RadioGroupComponent> & {
   label?: string;
   description?: string;
-  items: RadioGroupItemProps[];
+  items: Array<RadioGroupItemProps>;
 };
 
 export const RadioGroup: FC<RadioGroupProps> = ({

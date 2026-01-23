@@ -33,7 +33,7 @@ export type CheckboxGroupProps = Omit<
   name?: string;
   label?: string;
   description?: string;
-  items: CheckboxGroupItemProps[];
+  items: Array<CheckboxGroupItemProps>;
   parent?: CheckboxGroupItemParentProps;
 };
 
