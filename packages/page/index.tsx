@@ -1,95 +1,120 @@
-"use client";
+import { EllipsisVertical } from "lucide-react";
+import { Button } from "@repo/button";
+import type { ComponentProps, FC, Key, ReactElement, ReactNode } from "react";
+import {
+  PageAction,
+  Page as PageComponent,
+  PageContent,
+  PageDescription,
+  PageHeader,
+  PageTitle,
+} from "@/components/thread-ui/page";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import { cva } from "class-variance-authority";
-import type { VariantProps } from "class-variance-authority";
-import type { ComponentProps, FC } from "react";
-
-import { cn } from "@/lib/utils";
-
-const pageVariants = cva(
-  "mx-auto flex min-h-min w-full flex-1 flex-col p-4 @container/page",
-  {
-    variants: {
-      variant: {
-        full: "w-full",
-        default: "max-w-5xl",
-        compact: "max-w-xl",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  },
-);
-
-export type PageProps = ComponentProps<"div"> &
-  VariantProps<typeof pageVariants>;
-
-export const Page: FC<PageProps> = ({ className, variant, ...props }) => {
-  return (
-    <div className={cn(pageVariants({ variant }), className)} {...props} />
-  );
+export type PageActionProps = {
+  key?: Key;
+  disabled?: boolean;
+  content: ReactNode;
+  onAction?: () => void;
+  render?: ReactElement;
 };
 
-export type PageHeaderProps = ComponentProps<"header">;
-
-export const PageHeader: FC<PageHeaderProps> = ({ className, ...props }) => {
-  return (
-    <header
-      data-slot="page-header"
-      className={cn(
-        "grid gap-1 pb-4 has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]",
-        className,
-      )}
-      {...props}
-    />
-  );
+export type PageProps = ComponentProps<typeof PageComponent> & {
+  title: ReactNode;
+  description?: ReactNode;
+  primaryAction?: PageActionProps;
+  secondaryActions?: Array<PageActionProps>;
 };
 
-export type PageTitleProps = ComponentProps<"h2">;
-
-export const PageTitle: FC<PageTitleProps> = ({ className, ...props }) => {
-  return (
-    <h2
-      className={cn("text-xl font-semibold tracking-tight", className)}
-      data-slot="page-title"
-      {...props}
-    />
-  );
-};
-
-export type PageDescriptionProps = ComponentProps<"p">;
-
-export const PageDescription: FC<PageDescriptionProps> = ({
-  className,
+export const Page: FC<PageProps> = ({
+  children,
+  title,
+  description,
+  primaryAction,
+  secondaryActions,
   ...props
 }) => {
   return (
-    <p
-      className={cn("text-muted-foreground text-sm", className)}
-      data-slot="page-description"
-      {...props}
-    />
+    <PageComponent {...props}>
+      <PageHeader>
+        <PageTitle>{title}</PageTitle>
+        {description && <PageDescription>{description}</PageDescription>}
+
+        {(primaryAction ||
+          (secondaryActions && secondaryActions?.length > 0)) && (
+          <>
+            {/* Desktop */}
+            <PageAction className="hidden @md/page:flex">
+              <div className="flex gap-2">
+                {secondaryActions?.map((action, index) => (
+                  <Button
+                    key={action.key ?? index}
+                    disabled={action.disabled}
+                    render={action.render}
+                    variant="secondary"
+                    onClick={action.onAction}
+                  >
+                    {action.content}
+                  </Button>
+                ))}
+
+                {primaryAction && (
+                  <Button
+                    key={primaryAction.key}
+                    disabled={primaryAction.disabled}
+                    render={primaryAction.render}
+                    onClick={primaryAction.onAction}
+                  >
+                    {primaryAction.content}
+                  </Button>
+                )}
+              </div>
+            </PageAction>
+
+            {/* Mobile */}
+            <PageAction className="flex @md/page:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  render={
+                    <Button size="icon" variant="secondary">
+                      <EllipsisVertical />
+                    </Button>
+                  }
+                />
+                <DropdownMenuContent align="end">
+                  {primaryAction && (
+                    <DropdownMenuItem
+                      key={primaryAction.key}
+                      disabled={primaryAction.disabled}
+                      render={primaryAction.render}
+                      onClick={primaryAction.onAction}
+                    >
+                      {primaryAction.content}
+                    </DropdownMenuItem>
+                  )}
+
+                  {secondaryActions?.map((action, index) => (
+                    <DropdownMenuItem
+                      key={action.key ?? index}
+                      disabled={action.disabled}
+                      render={action.render}
+                      onClick={action.onAction}
+                    >
+                      {action.content}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </PageAction>
+          </>
+        )}
+      </PageHeader>
+      <PageContent>{children}</PageContent>
+    </PageComponent>
   );
-};
-
-export type PageActionProps = ComponentProps<"div">;
-
-export const PageAction: FC<PageActionProps> = ({ className, ...props }) => {
-  return (
-    <div
-      data-slot="page-action"
-      className={cn(
-        "col-start-2 row-span-2 row-start-1 self-start justify-self-end",
-        className,
-      )}
-      {...props}
-    />
-  );
-};
-
-export type PageContentProps = ComponentProps<"div">;
-
-export const PageContent: FC<PageContentProps> = ({ className, ...props }) => {
-  return <div className={cn("flex-1", className)} {...props} />;
 };

@@ -14,23 +14,12 @@ pnpm dlx shadcn@latest add @fabric-ui/page
 ## Usage
 
 ```tsx
-import {
-  Page,
-  PageAction,
-  PageContent,
-  PageDescription,
-  PageHeader,
-  PageTitle,
-} from "@repo/page";
+import { Page } from "@repo/page";
 ```
 
 ```tsx
-<Page>
-  <PageHeader>
-    <PageTitle>Products</PageTitle>
-    <PageDescription>Manage your products and inventory.</PageDescription>
-  </PageHeader>
-  <PageContent>{/* Page content */}</PageContent>
+<Page title="Products" description="Manage your products and inventory.">
+  {/* Page content */}
 </Page>
 ```
 
@@ -38,7 +27,7 @@ import {
 
 ### With Actions
 
-Use `PageAction` with `Button` to add action buttons to the page header.
+Use `primaryAction` and `secondaryActions` props to add action buttons to the page header.
 
 <Preview path="page-with-actions" />
 
@@ -56,50 +45,11 @@ The root container component.
 
 <AutoTypeTable
   path="../../packages/page/index.tsx"
-  type="Pick<PageProps, 'variant' | 'className'>"
+  type="Pick<PageProps, 'title' | 'description' | 'primaryAction' | 'secondaryActions' | 'variant' | 'className'>"
 />
 
-### PageHeader
+### PageActionProps
 
-The header section containing title, description, and actions.
+The action props for `primaryAction` and `secondaryActions`.
 
-<AutoTypeTable
-  path="../../packages/page/index.tsx"
-  type="Pick<PageHeaderProps, 'className'>"
-/>
-
-### PageTitle
-
-The page title component.
-
-<AutoTypeTable
-  path="../../packages/page/index.tsx"
-  type="Pick<PageTitleProps, 'className'>"
-/>
-
-### PageDescription
-
-The page description component.
-
-<AutoTypeTable
-  path="../../packages/page/index.tsx"
-  type="Pick<PageDescriptionProps, 'className'>"
-/>
-
-### PageAction
-
-Container for action buttons.
-
-<AutoTypeTable
-  path="../../packages/page/index.tsx"
-  type="Pick<PageActionProps, 'className'>"
-/>
-
-### PageContent
-
-The main content area.
-
-<AutoTypeTable
-  path="../../packages/page/index.tsx"
-  type="Pick<PageContentProps, 'className'>"
-/>
+<AutoTypeTable path="../../packages/page/index.tsx" type="PageActionProps" />
