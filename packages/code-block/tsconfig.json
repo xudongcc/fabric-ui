@@ -3,11 +3,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@repo/*": ["../*"],
-      "@/components/*": ["../shadcn-ui/components/*"],
-      "@/utils/*": ["../shadcn-ui/utils/*"],
-      "@/lib/*": ["../shadcn-ui/lib/*"],
-      "@/hooks/*": ["../shadcn-ui/hooks/*"]
+      "@/components/fabric-ui/*": ["../*"],
+      "@/components/*": ["../../packages/shadcn-ui/components/*"],
+      "@/utils/*": ["../../packages/shadcn-ui/utils/*"],
+      "@/lib/*": ["../../packages/shadcn-ui/lib/*"],
+      "@/hooks/*": ["../../packages/shadcn-ui/hooks/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

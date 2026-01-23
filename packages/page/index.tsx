@@ -1,6 +1,6 @@
 import { EllipsisVertical } from "lucide-react";
-import { Button } from "@repo/button";
 import type { ComponentProps, FC, Key, ReactElement, ReactNode } from "react";
+import { Button } from "@/components/fabric-ui/button";
 import {
   PageAction,
   Page as PageComponent,
