@@ -1,5 +1,5 @@
 import { EllipsisVertical } from "lucide-react";
-import type { ComponentProps, FC, Key, ReactElement, ReactNode } from "react";
+import type { ComponentProps, FC, ReactElement, ReactNode } from "react";
 import { Button } from "@/components/fabric-ui/button";
 import {
   PageAction,
@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export type PageActionProps = {
-  key?: Key;
   disabled?: boolean;
-  content: ReactNode;
-  onAction?: () => void;
+  icon?: ReactElement;
+  label: string;
+  onClick?: () => void;
   render?: ReactElement;
 };
 
@@ -53,24 +53,26 @@ export const Page: FC<PageProps> = ({
               <div className="flex gap-2">
                 {secondaryActions?.map((action, index) => (
                   <Button
-                    key={action.key ?? index}
+                    key={action.label ?? index}
                     disabled={action.disabled}
                     render={action.render}
                     variant="secondary"
-                    onClick={action.onAction}
+                    onClick={action.onClick}
                   >
-                    {action.content}
+                    {action.icon}
+                    {action.label}
                   </Button>
                 ))}
 
                 {primaryAction && (
                   <Button
-                    key={primaryAction.key}
+                    key={primaryAction.label}
                     disabled={primaryAction.disabled}
                     render={primaryAction.render}
-                    onClick={primaryAction.onAction}
+                    onClick={primaryAction.onClick}
                   >
-                    {primaryAction.content}
+                    {primaryAction.icon}
+                    {primaryAction.label}
                   </Button>
                 )}
               </div>
@@ -89,23 +91,25 @@ export const Page: FC<PageProps> = ({
                 <DropdownMenuContent align="end">
                   {primaryAction && (
                     <DropdownMenuItem
-                      key={primaryAction.key}
+                      key={primaryAction.label}
                       disabled={primaryAction.disabled}
                       render={primaryAction.render}
-                      onClick={primaryAction.onAction}
+                      onClick={primaryAction.onClick}
                     >
-                      {primaryAction.content}
+                      {primaryAction.icon}
+                      {primaryAction.label}
                     </DropdownMenuItem>
                   )}
 
                   {secondaryActions?.map((action, index) => (
                     <DropdownMenuItem
-                      key={action.key ?? index}
+                      key={action.label ?? index}
                       disabled={action.disabled}
                       render={action.render}
-                      onClick={action.onAction}
+                      onClick={action.onClick}
                     >
-                      {action.content}
+                      {action.icon}
+                      {action.label}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
