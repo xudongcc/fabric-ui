@@ -62,24 +62,6 @@ importers:
       '@base-ui/react':
         specifier: ^1.1.0
         version: 1.1.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      '@repo/badge':
-        specifier: workspace:*
-        version: link:../../packages/badge
-      '@repo/button':
-        specifier: workspace:*
-        version: link:../../packages/button
-      '@repo/checkbox-group':
-        specifier: workspace:*
-        version: link:../../packages/checkbox-group
-      '@repo/data-table':
-        specifier: workspace:*
-        version: link:../../packages/data-table
-      '@repo/page':
-        specifier: workspace:*
-        version: link:../../packages/page
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../../packages/shadcn-ui
       '@tanstack/react-form':
         specifier: ^1.27.7
         version: 1.27.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -151,11 +133,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/badge:
+  components/badge:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -165,7 +144,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -176,11 +155,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/button:
+  components/button:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
@@ -193,7 +169,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -204,11 +180,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/checkbox-group:
+  components/checkbox-group:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -218,7 +191,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -229,14 +202,11 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/code-block:
+  components/code-block:
     dependencies:
       '@radix-ui/react-use-controllable-state':
         specifier: ^1.2.2
         version: 1.2.2(@types/react@19.2.8)(react@19.2.3)
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       '@shikijs/transformers':
         specifier: ^3.21.0
         version: 3.21.0
@@ -258,7 +228,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -269,11 +239,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/data-table:
+  components/data-table:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -292,7 +259,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -303,36 +270,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/dialog:
+  components/page:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
-      react:
-        specifier: ^19.2.3
-        version: 19.2.3
-      react-dom:
-        specifier: ^19.2.3
-        version: 19.2.3(react@19.2.3)
-    devDependencies:
-      '@repo/tsconfig':
-        specifier: workspace:*
-        version: link:../tsconfig
-      '@types/react':
-        specifier: ^19.2.8
-        version: 19.2.8
-      '@types/react-dom':
-        specifier: ^19.2.3
-        version: 19.2.3(@types/react@19.2.8)
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/page:
-    dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
@@ -345,7 +284,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8
@@ -356,11 +295,8 @@ importers:
         specifier: ^5.9.3
         version: 5.9.3
 
-  packages/radio-group:
+  components/radio-group:
     dependencies:
-      '@repo/shadcn-ui':
-        specifier: workspace:*
-        version: link:../shadcn-ui
       react:
         specifier: ^19.2.3
         version: 19.2.3
@@ -370,7 +306,7 @@ importers:
     devDependencies:
       '@repo/tsconfig':
         specifier: workspace:*
-        version: link:../tsconfig
+        version: link:../../packages/tsconfig
       '@types/react':
         specifier: ^19.2.8
         version: 19.2.8

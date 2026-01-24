@@ -1,10 +1,9 @@
 {
-  "name": "@repo/radio-group",
-  "description": "A radio group component for selecting a single option from a list of choices.",
+  "name": "@repo/checkbox-group",
+  "description": "A checkbox group component that manages collective state across multiple checkboxes with support for parent checkbox and indeterminate states.",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@repo/shadcn-ui": "workspace:*",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },

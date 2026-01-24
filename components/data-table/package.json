@@ -1,10 +1,12 @@
 {
-  "name": "@repo/badge",
-  "description": "Badges are used to inform users of the tone of an object or of an action that’s been taken.",
+  "name": "@repo/data-table",
+  "description": "A data table component that displays data in a grid format with sorting, filtering, and pagination.",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@repo/shadcn-ui": "workspace:*",
+    "@tanstack/react-table": "^8.21.3",
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },

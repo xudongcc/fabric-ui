@@ -1,12 +1,9 @@
 {
-  "name": "@repo/data-table",
-  "description": "A data table component that displays data in a grid format with sorting, filtering, and pagination.",
+  "name": "@repo/page",
+  "description": "A layout component for building consistent page structures with title, description, and actions.",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@repo/shadcn-ui": "workspace:*",
-    "@tanstack/react-table": "^8.21.3",
-    "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
