@@ -1,6 +1,7 @@
 "use client";
 
-import type { ComponentProps, FC, ReactNode } from "react";
+import type { SelectRootProps } from "@base-ui/react/select";
+import type { ReactNode } from "react";
 
 import {
   SelectContent,
@@ -17,7 +18,10 @@ export type SelectItemProps = {
   value: string;
 };
 
-export type SelectProps = ComponentProps<typeof SelectRoot> & {
+export type SelectProps<
+  Value,
+  Multiple extends boolean | undefined = false,
+> = SelectRootProps<Value, Multiple> & {
   label?: string;
   description?: string;
   error?: string;
@@ -26,7 +30,7 @@ export type SelectProps = ComponentProps<typeof SelectRoot> & {
   className?: string;
 };
 
-export const Select: FC<SelectProps> = ({
+export function Select<Value, Multiple extends boolean | undefined = false>({
   label,
   description,
   error,
@@ -35,7 +39,7 @@ export const Select: FC<SelectProps> = ({
   className,
   disabled,
   ...props
-}) => {
+}: SelectProps<Value, Multiple>) {
   return (
     <Field
       className={cn(className)}
@@ -64,4 +68,4 @@ export const Select: FC<SelectProps> = ({
       )}
     </Field>
   );
-};
+}

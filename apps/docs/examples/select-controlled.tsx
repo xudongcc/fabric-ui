@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Select } from "@/components/fabric-ui/select";
 
 const Example = () => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string | null>(null);
 
   return (
     <div className="space-y-4">
