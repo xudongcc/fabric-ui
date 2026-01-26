@@ -1,4 +1,7 @@
-import type { ComponentProps, FC } from "react";
+import type {
+  RadioGroupChangeEventDetails,
+  RadioGroupProps as RadioGroupPrimitiveProps,
+} from "@base-ui/react";
 import {
   RadioGroup as RadioGroupComponent,
   RadioGroupItem,
@@ -13,27 +16,34 @@ import {
 } from "@/components/ui/field";
 import { cn } from "@/lib/utils";
 
-export type RadioGroupItemProps = {
+export type RadioGroupItemProps<Value extends string | null> = {
   label: string;
   description?: string;
-  value: string;
+  value: Value;
   disabled?: boolean;
 };
 
-export type RadioGroupProps = ComponentProps<typeof RadioGroupComponent> & {
-  label?: string;
-  description?: string;
-  items: Array<RadioGroupItemProps>;
-};
+export type RadioGroupProps<Value extends string | null> =
+  RadioGroupPrimitiveProps & {
+    label?: string;
+    description?: string;
+    items: Array<RadioGroupItemProps<Value>>;
+    value?: Value;
+    defaultValue?: Value;
+    onValueChange?: (
+      value: Value,
+      eventDetails: RadioGroupChangeEventDetails,
+    ) => void;
+  };
 
-export const RadioGroup: FC<RadioGroupProps> = ({
+export function RadioGroup<Value extends string | null>({
   className,
   label,
   description,
   disabled,
   items,
   ...props
-}) => {
+}: RadioGroupProps<Value>) {
   return (
     <FieldSet className={cn(className)}>
       {label && <FieldLegend variant="label">{label}</FieldLegend>}
@@ -58,4 +68,4 @@ export const RadioGroup: FC<RadioGroupProps> = ({
       </RadioGroupComponent>
     </FieldSet>
   );
-};
+}

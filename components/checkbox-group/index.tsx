@@ -1,4 +1,7 @@
-import type { ComponentProps, FC } from "react";
+import type {
+  CheckboxGroupChangeEventDetails,
+  CheckboxGroupProps as CheckboxGroupPrimitiveProps,
+} from "@base-ui/react/checkbox-group";
 import {
   CheckboxGroup as CheckboxGroupComponent,
   CheckboxGroupItem,
@@ -11,12 +14,13 @@ import {
   FieldLegend,
   FieldSet,
 } from "@/components/ui/field";
+
 import { cn } from "@/lib/utils";
 
-export type CheckboxGroupItemProps = {
+export type CheckboxGroupItemProps<Value extends string> = {
   label: string;
   description?: string;
-  value?: string;
+  value?: Value;
   disabled?: boolean;
 };
 
@@ -26,18 +30,24 @@ export type CheckboxGroupItemParentProps = {
   disabled?: boolean;
 };
 
-export type CheckboxGroupProps = Omit<
-  ComponentProps<typeof CheckboxGroupComponent>,
+export type CheckboxGroupProps<Value extends string> = Omit<
+  CheckboxGroupPrimitiveProps,
   "allValues"
 > & {
   name?: string;
   label?: string;
   description?: string;
-  items: Array<CheckboxGroupItemProps>;
+  items: Array<CheckboxGroupItemProps<Value>>;
   parent?: CheckboxGroupItemParentProps;
+  value?: Value[];
+  defaultValue?: Value[];
+  onValueChange?: (
+    value: Value[],
+    eventDetails: CheckboxGroupChangeEventDetails,
+  ) => void;
 };
 
-export const CheckboxGroup: FC<CheckboxGroupProps> = ({
+export function CheckboxGroup<Value extends string>({
   className,
   name,
   label,
@@ -46,7 +56,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   items,
   parent,
   ...props
-}) => {
+}: CheckboxGroupProps<Value>) {
   return (
     <FieldSet className={cn(className)}>
       {label && <FieldLegend variant="label">{label}</FieldLegend>}
@@ -96,4 +106,4 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
       </CheckboxGroupComponent>
     </FieldSet>
   );
-};
+}
