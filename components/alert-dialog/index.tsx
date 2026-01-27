@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import type { FC, PropsWithChildren, ReactNode } from "react";
 
 import {
@@ -27,146 +27,163 @@ export interface AlertDialogOptions {
   variant?: "default" | "destructive";
 }
 
-interface AlertDialogItem {
+interface AlertDialogItemProps {
   id: number;
   options: AlertDialogOptions;
   resolve: (value: boolean) => void;
+  open: boolean;
 }
 
-type AlertDialogState = {
-  queue: AlertDialogItem[];
-  current: AlertDialogItem | null;
-};
+type AlertDialogListener = (item: AlertDialogItemProps) => void;
 
-type Listener = (state: AlertDialogState) => void;
+class AlertDialogManager {
+  private listeners = new Set<AlertDialogListener>();
+  private idCounter = 0;
 
-const listeners: Set<Listener> = new Set();
-
-let state: AlertDialogState = {
-  queue: [],
-  current: null,
-};
-
-let idCounter = 0;
-
-const notify = () => {
-  for (const listener of listeners) {
-    listener(state);
-  }
-};
-
-const processQueue = () => {
-  if (state.current === null && state.queue.length > 0) {
-    const [next, ...rest] = state.queue;
-    state = {
-      queue: rest,
-      current: next,
+  subscribe(listener: AlertDialogListener) {
+    this.listeners.add(listener);
+    return () => {
+      this.listeners.delete(listener);
     };
-    notify();
   }
+
+  show(options: AlertDialogOptions): Promise<boolean> {
+    return new Promise<boolean>((resolve) => {
+      this.listeners.forEach((listener) =>
+        listener({
+          id: this.idCounter++,
+          options,
+          resolve,
+          open: true,
+        }),
+      );
+    });
+  }
+}
+
+const MANAGER_KEY = Symbol.for("alert-dialog-manager");
+
+const getManager = (): AlertDialogManager => {
+  const globalObj = globalThis as unknown as Record<symbol, AlertDialogManager>;
+  if (!globalObj[MANAGER_KEY]) {
+    globalObj[MANAGER_KEY] = new AlertDialogManager();
+  }
+  return globalObj[MANAGER_KEY];
 };
 
-const addToQueue = (item: AlertDialogItem) => {
-  state = {
-    ...state,
-    queue: [...state.queue, item],
-  };
-  processQueue();
-};
-
-const closeCurrent = (result: boolean) => {
-  if (state.current) {
-    state.current.resolve(result);
-    state = {
-      ...state,
-      current: null,
-    };
-    notify();
-    // Process next item in queue after a small delay for animation
-    setTimeout(processQueue, 150);
-  }
-};
+const manager = getManager();
 
 export const alertDialog = (options: AlertDialogOptions): Promise<boolean> => {
-  return new Promise<boolean>((resolve) => {
-    const item: AlertDialogItem = {
-      id: idCounter++,
-      options,
-      resolve,
-    };
-    addToQueue(item);
-  });
+  return manager.show(options);
 };
 
-export type AlertDialogProviderProps = PropsWithChildren;
+interface AlertDialogRendererProps {
+  dialog: AlertDialogItemProps;
+  onClose: (id: number, result: boolean) => void;
+  onRemove: (id: number) => void;
+}
 
-export const AlertDialogProvider: FC<AlertDialogProviderProps> = ({
-  children,
-}) => {
-  const [localState, setLocalState] = useState<AlertDialogState>(state);
+const AlertDialogRenderer = memo(function AlertDialogRenderer({
+  dialog,
+  onClose,
+  onRemove,
+}: AlertDialogRendererProps) {
+  const { id, open, options } = dialog;
+
+  return (
+    <AlertDialog
+      open={open}
+      onOpenChange={(open) => {
+        if (!open) onClose(id, false);
+      }}
+      onOpenChangeComplete={(open) => {
+        if (!open) onRemove(id);
+      }}
+    >
+      <AlertDialogContent size={options.size}>
+        <AlertDialogHeader>
+          {options.icon && (
+            <AlertDialogMedia
+              className={cn(
+                options.variant === "destructive" &&
+                  "bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive",
+              )}
+            >
+              {options.icon}
+            </AlertDialogMedia>
+          )}
+          <AlertDialogTitle>{options.title}</AlertDialogTitle>
+          {options.description && (
+            <AlertDialogDescription>
+              {options.description}
+            </AlertDialogDescription>
+          )}
+        </AlertDialogHeader>
+
+        {options.content}
+
+        <AlertDialogFooter>
+          <AlertDialogCancel>
+            {options.cancelText ?? "Cancel"}
+          </AlertDialogCancel>
+          <AlertDialogAction
+            variant={options.variant}
+            onClick={() => onClose(id, true)}
+          >
+            {options.confirmText ?? "Confirm"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+});
+
+export const AlertDialogProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [dialogs, setDialogs] = useState<Array<AlertDialogItemProps>>([]);
 
   useEffect(() => {
-    listeners.add(setLocalState);
+    const unsubscribe = manager.subscribe((item) => {
+      setDialogs((prev) => [...prev, item]);
+    });
+
     return () => {
-      listeners.delete(setLocalState);
+      unsubscribe();
+
+      setDialogs((prev) => {
+        prev.forEach((d) => {
+          if (d.open) d.resolve(false);
+        });
+        return [];
+      });
     };
   }, []);
 
-  const handleAction = () => {
-    closeCurrent(true);
-  };
+  const handleClose = useCallback((id: number, result: boolean) => {
+    setDialogs((prev) => {
+      const dialog = prev.find((d) => d.id === id);
+      if (dialog && dialog.open) {
+        dialog.resolve(result);
+        return prev.map((d) => (d.id === id ? { ...d, open: false } : d));
+      }
+      return prev;
+    });
+  }, []);
 
-  const handleCancel = () => {
-    closeCurrent(false);
-  };
-
-  const handleOpenChange = (open: boolean) => {
-    if (!open && localState.current) {
-      closeCurrent(false);
-    }
-  };
-
-  const current = localState.current;
+  const handleRemove = useCallback((id: number) => {
+    setDialogs((prev) => prev.filter((d) => d.id !== id));
+  }, []);
 
   return (
     <>
       {children}
-      <AlertDialog open={current !== null} onOpenChange={handleOpenChange}>
-        <AlertDialogContent size={current?.options.size}>
-          <AlertDialogHeader>
-            {current?.options.icon && (
-              <AlertDialogMedia
-                className={cn(
-                  current?.options.variant === "destructive" &&
-                    "bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive",
-                )}
-              >
-                {current.options.icon}
-              </AlertDialogMedia>
-            )}
-            <AlertDialogTitle>{current?.options.title}</AlertDialogTitle>
-            {current?.options.description && (
-              <AlertDialogDescription>
-                {current.options.description}
-              </AlertDialogDescription>
-            )}
-          </AlertDialogHeader>
-
-          {current?.options.content}
-
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancel}>
-              {current?.options.cancelText ?? "Cancel"}
-            </AlertDialogCancel>
-            <AlertDialogAction
-              variant={current?.options.variant}
-              onClick={handleAction}
-            >
-              {current?.options.confirmText ?? "Confirm"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {dialogs.map((dialog) => (
+        <AlertDialogRenderer
+          key={dialog.id}
+          dialog={dialog}
+          onClose={handleClose}
+          onRemove={handleRemove}
+        />
+      ))}
     </>
   );
 };
