@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 export interface AlertDialogOptions {
   title: ReactNode;
   description?: ReactNode;
+  content?: ReactNode;
   icon?: ReactNode;
   size?: "default" | "sm";
   cancelText?: string;
@@ -150,6 +151,9 @@ export const AlertDialogProvider: FC<AlertDialogProviderProps> = ({
               </AlertDialogDescription>
             )}
           </AlertDialogHeader>
+
+          {current?.options.content}
+
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancel}>
               {current?.options.cancelText ?? "Cancel"}
