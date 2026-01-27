@@ -46,12 +46,12 @@ const Example = () => (
     data={data}
     rowActions={(row) => [
       {
-        content: "Edit",
-        onAction: () => console.log("Edit", row.original),
+        label: "Edit",
+        onClick: () => console.log("Edit", row.original),
       },
       {
-        content: "Delete",
-        onAction: () => console.log("Delete", row.original),
+        label: "Delete",
+        onClick: () => console.log("Delete", row.original),
       },
     ]}
   />

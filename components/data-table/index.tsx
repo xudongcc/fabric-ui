@@ -20,7 +20,7 @@ import type {
   RowSelectionState,
   TableOptions,
 } from "@tanstack/react-table";
-import type { CSSProperties, Key, ReactNode } from "react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -72,10 +72,10 @@ export type DataTableColumnProps<
 };
 
 export interface DataTableRowActionProps<TData extends RowData> {
-  key?: Key;
   disabled?: boolean;
-  content: ReactNode;
-  onAction?: (row: Row<TData>) => Promise<void> | void;
+  icon?: ReactElement;
+  label: string;
+  onClick?: (row: Row<TData>) => Promise<void> | void;
 }
 
 export interface DataTableProps<TData extends RowData, TValue = unknown> {
@@ -166,22 +166,18 @@ export function DataTable<TData extends RowData, TValue = unknown>({
                     }
                   />
                   <DropdownMenuContent align="end">
-                    {rowActions?.(row).map((action, index) => (
+                    {rowActions?.(row).map((action) => (
                       <DropdownMenuItem
-                        key={
-                          action.key ??
-                          (typeof action.content === "string"
-                            ? action.content
-                            : index)
-                        }
+                        key={action.label}
                         disabled={action.disabled}
-                        {...(action.onAction
+                        {...(action.onClick
                           ? {
-                              onClick: () => action.onAction?.(row),
+                              onClick: () => action.onClick?.(row),
                             }
                           : {})}
                       >
-                        {action.content}
+                        {action.icon}
+                        {action.label}
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
