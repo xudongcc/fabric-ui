@@ -34,7 +34,9 @@ export const getPackage = async (packageName: string) => {
 
   const packageFiles = readdirSync(packageDir, { withFileTypes: true });
   const tsxFiles = packageFiles.filter(
-    (file) => file.isFile() && file.name.endsWith(".tsx"),
+    (file) =>
+      file.isFile() &&
+      (file.name.endsWith(".tsx") || file.name.endsWith(".ts")),
   );
 
   const cssFiles = packageFiles.filter(
