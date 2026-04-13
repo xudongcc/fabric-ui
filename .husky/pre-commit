@@ -21,7 +21,7 @@ git stash push --quiet --keep-index --message "pre-commit-stash" || true
 STASHED=$?
 
 # Run ESLint and Prettier on the staged files
-pnpm lint:fix
+pnpm lint
 pnpm format
 FORMAT_EXIT_CODE=$?
 

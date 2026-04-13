@@ -322,10 +322,43 @@ export function DataFilter({
   const watchFilter = useStore(form.store, (state) => state.values.filter);
 
   // 将筛选条件分组为固定和非固定两类
-  const [{ fixedFilters, unfixedFilters }, setFilterGroups] = useState({
-    fixedFilters: filters.filter((item) => item.pinned),
-    unfixedFilters: filters.filter((item) => item.pinned !== true),
+  const [{ fixedFilters, unfixedFilters }, setFilterGroups] = useState(() => {
+    return {
+      fixedFilters: filters.filter(
+        (item) => item.pinned || (values && !isEmpty(values[item.field])),
+      ),
+      unfixedFilters: filters.filter(
+        (item) =>
+          item.pinned !== true && !(values && !isEmpty(values[item.field])),
+      ),
+    };
   });
+
+  const [prevValues, setPrevValues] = useState(values);
+
+  // 根据 React 推荐模式，在渲染期间直接同步外部 props 变化，避免 useEffect 带来的二次渲染
+  if (values !== prevValues) {
+    setPrevValues(values);
+    let changed = false;
+    const newFixedFilters = [...fixedFilters];
+    const newUnfixedFilters = [];
+
+    for (const item of unfixedFilters) {
+      if (!isEmpty(values?.[item.field])) {
+        newFixedFilters.push(item);
+        changed = true;
+      } else {
+        newUnfixedFilters.push(item);
+      }
+    }
+
+    if (changed) {
+      setFilterGroups({
+        fixedFilters: newFixedFilters,
+        unfixedFilters: newUnfixedFilters,
+      });
+    }
+  }
 
   const handleFiltersChange = useCallback(() => {
     onChange?.(omitEmpty(flattenObject(form.state.values.filter)));
@@ -456,8 +489,10 @@ export function DataFilter({
                 // Dialog -> Popover -> ScrollArea 时会有滚动问题，需要加 modal={true}
                 // issue:https://github.com/shadcn-ui/ui/issues/922
                 key={field}
-                defaultOpen={originalFilter?.pinned !== true}
                 modal={true}
+                defaultOpen={
+                  originalFilter?.pinned !== true && isEmpty(fieldValue)
+                }
                 onOpenChange={(open) => {
                   // 关闭筛选弹窗的时候如果该筛选条件没有值，则将其移除固定项
                   if (
@@ -539,8 +574,10 @@ export function DataFilter({
                       className="hover:bg-accent rounded-full px-2 py-3 text-xs"
                       variant="outline"
                     >
-                      <span>{i18n?.addFilter ?? "Add Filter"}</span>
-                      <Plus className="size-4 shrink-0" />
+                      <div className="flex items-center gap-1">
+                        <span>{i18n?.addFilter ?? "Add Filter"}</span>
+                        <Plus className="size-4 shrink-0" />
+                      </div>
                     </Badge>
                   )) as ReactElement
                 }
