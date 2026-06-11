@@ -312,6 +312,9 @@ importers:
 
   components/data-table:
     dependencies:
+      '@repo/empty':
+        specifier: workspace:*
+        version: link:../empty
       '@tanstack/react-table':
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -396,6 +399,28 @@ importers:
       '@repo/button':
         specifier: workspace:*
         version: link:../button
+      react:
+        specifier: ^19.2.3
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.2.3
+        version: 19.2.3(react@19.2.3)
+    devDependencies:
+      '@repo/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/react':
+        specifier: ^19.2.8
+        version: 19.2.8
+      '@types/react-dom':
+        specifier: ^19.2.3
+        version: 19.2.3(@types/react@19.2.8)
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  components/file-upload:
+    dependencies:
       react:
         specifier: ^19.2.3
         version: 19.2.3

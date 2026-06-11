@@ -22,6 +22,7 @@ import type {
 } from "@tanstack/react-table";
 import type { CSSProperties, ReactElement, ReactNode } from "react";
 
+import { Empty } from "@/components/fabric-ui/empty";
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -91,6 +92,8 @@ export interface DataTableProps<TData extends RowData, TValue = unknown> {
 
   bulkActions?: ReactNode;
 
+  empty?: ReactNode;
+
   getRowId?: TableOptions<TData>["getRowId"];
 
   onRowClick?: (row: Row<TData>) => void;
@@ -101,6 +104,7 @@ export function DataTable<TData extends RowData, TValue = unknown>({
   data,
   pagination,
   bulkActions,
+  empty,
   onRowSelectionChange,
   onAllRowsSelectedChange,
   getRowId = (row, index) =>
@@ -373,7 +377,12 @@ export function DataTable<TData extends RowData, TValue = unknown>({
                   className="bg-background h-24 text-center"
                   colSpan={tableColumns.length}
                 >
-                  No results.
+                  {empty ?? (
+                    <Empty
+                      description="Try changing the filters or search term"
+                      title="No Items found"
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             )}

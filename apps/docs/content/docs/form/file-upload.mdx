@@ -1,0 +1,68 @@
+---
+title: File Upload
+description: A file upload component with click, drag-and-drop, and paste support.
+---
+
+<Preview path="file-upload" />
+
+## Installation
+
+```bash
+pnpm dlx shadcn@latest add @fabric-ui/file-upload
+```
+
+## Usage
+
+```tsx
+import { FileUpload } from "@/components/fabric-ui/file-upload";
+```
+
+```tsx
+<FileUpload
+  multiple
+  label="Attachments"
+  description="Drop files here, paste from your clipboard, or click to browse."
+  accept="image/*,.pdf"
+/>
+```
+
+## Examples
+
+### Disabled
+
+Use the `disabled` prop to disable click, drag-and-drop, and paste handling.
+
+<Preview path="file-upload-disabled" />
+
+### Preview
+
+Use the `preview` prop to show selected media in a preview grid.
+
+<Preview path="file-upload-preview" />
+
+## Features
+
+- **Click to Browse**: Opens the native file picker from a focused drop zone
+- **Drag & Drop**: Accepts dropped files through the same change pipeline
+- **Paste Support**: Reads file items from the clipboard when focused
+- **Controlled & Uncontrolled**: Supports `value`, `defaultValue`, and `onChange`
+- **Preview Layout**: Use the `preview` prop to show selected files in a media preview grid
+- **Native Input Props**: Supports `accept`, `multiple`, `disabled`, `name`, and other file input props
+
+## Best Practices
+
+- Use `multiple` when users may provide more than one file
+- Use `accept` to guide file selection, but validate files on the server too
+- Provide a concise `label` and `description` so users know what to upload
+- Treat `value` as the source of truth in forms that need external validation
+
+## API Reference
+
+### FileUploadProps
+
+Wraps the Thread UI `FileUpload` component with Fabric UI field label, description, and error states. Extends all native HTML `<input>` element props except `type`, `value`, `defaultValue`, and `onChange`.
+
+<AutoTypeTable
+  path="../../components/file-upload/index.tsx"
+  type={`Pick<FileUploadProps, 'label' | 'description' | 'error' | 'value' | 'defaultValue' | 'onChange' | 'multiple' | 'accept' | 'disabled' | 'preview' | 'className' | 'dropzoneClassName' | 'listClassName' | 'itemClassName'>`}
+/>
