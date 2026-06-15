@@ -25,6 +25,12 @@ import { Page } from "@/components/fabric-ui/page";
 
 ## Examples
 
+### With Back Action
+
+Use the `backAction` prop to add a back button to the page header.
+
+<Preview path="page-with-back-action" />
+
 ### With Actions
 
 Use `primaryAction` and `secondaryActions` props to add action buttons to the page header.
@@ -45,7 +51,16 @@ The root container component.
 
 <AutoTypeTable
   path="../../components/page/index.tsx"
-  type="Pick<PageProps, 'title' | 'description' | 'primaryAction' | 'secondaryActions' | 'variant' | 'className'>"
+  type="Pick<PageProps, 'title' | 'description' | 'backAction' | 'primaryAction' | 'secondaryActions' | 'variant' | 'className'>"
+/>
+
+### PageBackActionProps
+
+The back action props for the page header.
+
+<AutoTypeTable
+  path="../../components/page/index.tsx"
+  type="PageBackActionProps"
 />
 
 ### PageActionProps

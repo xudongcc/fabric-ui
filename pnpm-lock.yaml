@@ -465,6 +465,9 @@ importers:
 
   components/page:
     dependencies:
+      '@repo/button':
+        specifier: workspace:*
+        version: link:../button
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)

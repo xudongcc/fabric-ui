@@ -2,7 +2,8 @@ import { EllipsisVertical } from "lucide-react";
 import type { ComponentProps, FC, ReactElement, ReactNode } from "react";
 import { Button } from "@/components/fabric-ui/button";
 import {
-  PageAction,
+  PageActions,
+  PageBackAction,
   Page as PageComponent,
   PageContent,
   PageDescription,
@@ -16,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+export type PageBackActionProps = ComponentProps<typeof PageBackAction>;
 export type PageActionProps = {
   disabled?: boolean;
   icon?: ReactElement;
@@ -27,6 +29,7 @@ export type PageActionProps = {
 export type PageProps = ComponentProps<typeof PageComponent> & {
   title: ReactNode;
   description?: ReactNode;
+  backAction?: PageBackActionProps;
   primaryAction?: PageActionProps;
   secondaryActions?: Array<PageActionProps>;
 };
@@ -35,6 +38,7 @@ export const Page: FC<PageProps> = ({
   children,
   title,
   description,
+  backAction,
   primaryAction,
   secondaryActions,
   ...props
@@ -42,6 +46,7 @@ export const Page: FC<PageProps> = ({
   return (
     <PageComponent {...props}>
       <PageHeader>
+        {backAction && <PageBackAction {...backAction} />}
         <PageTitle>{title}</PageTitle>
         {description && <PageDescription>{description}</PageDescription>}
 
@@ -49,37 +54,35 @@ export const Page: FC<PageProps> = ({
           (secondaryActions && secondaryActions?.length > 0)) && (
           <>
             {/* Desktop */}
-            <PageAction className="hidden @md/page:flex">
-              <div className="flex gap-2">
-                {secondaryActions?.map((action, index) => (
-                  <Button
-                    key={action.label ?? index}
-                    disabled={action.disabled}
-                    render={action.render}
-                    variant="secondary"
-                    onClick={action.onClick}
-                  >
-                    {action.icon}
-                    {action.label}
-                  </Button>
-                ))}
+            <PageActions className="hidden @md/page:flex">
+              {secondaryActions?.map((action, index) => (
+                <Button
+                  key={action.label ?? index}
+                  disabled={action.disabled}
+                  render={action.render}
+                  variant="secondary"
+                  onClick={action.onClick}
+                >
+                  {action.icon}
+                  {action.label}
+                </Button>
+              ))}
 
-                {primaryAction && (
-                  <Button
-                    key={primaryAction.label}
-                    disabled={primaryAction.disabled}
-                    render={primaryAction.render}
-                    onClick={primaryAction.onClick}
-                  >
-                    {primaryAction.icon}
-                    {primaryAction.label}
-                  </Button>
-                )}
-              </div>
-            </PageAction>
+              {primaryAction && (
+                <Button
+                  key={primaryAction.label}
+                  disabled={primaryAction.disabled}
+                  render={primaryAction.render}
+                  onClick={primaryAction.onClick}
+                >
+                  {primaryAction.icon}
+                  {primaryAction.label}
+                </Button>
+              )}
+            </PageActions>
 
             {/* Mobile */}
-            <PageAction className="flex @md/page:hidden">
+            <PageActions className="flex @md/page:hidden">
               <DropdownMenu>
                 <DropdownMenuTrigger
                   render={
@@ -114,7 +117,7 @@ export const Page: FC<PageProps> = ({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-            </PageAction>
+            </PageActions>
           </>
         )}
       </PageHeader>
